@@ -7,10 +7,11 @@
   <title></title>
   <!-- Bootstrap -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-  <!-- Adding the Bootswatch -->
-  <link rel="stylesheet" type="text/css" href="assets/css/bootswatch.css">
-  <!-- Adding the CSS -->
-  <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <!-- Latest compiled Bootstraap JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 </head>
 
 <body>
@@ -150,7 +151,6 @@
       </div>
     </div>
 
-
     <!-- Submit Button -->
     <button type="submit" class="btn btn-primary btn-lg btn-block" id="submit"><i class="fa fa-check-circle" aria-hidden="true"></i>Submit</button>
     <br>
@@ -163,16 +163,90 @@
 
   </div>
 
-  <!-- jQuery library -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <!-- Latest compiled Bootstraap JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <!-- Firebase-->
-  <script src="https://www.gstatic.com/firebasejs/3.7.1/firebase.js"></script>
-  <!-- Moment Js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
-  <!-- JavaScript -->
-  <script type="text/javascript" src="assets/javascript/app.js"></script>
+    	<!-- Modal -->
+    	<div id="resultsModal" class="modal fade" role="dialog">
+    	  <div class="modal-dialog">
+
+    	    <!-- Modal content-->
+    	    <div class="modal-content">
+    	      <div class="modal-header">
+    	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+    	        <h2 class="modal-title"><strong>Best Match</strong></h2>
+    	      </div>
+    	      <div class="modal-body">
+    	        <h2 id="matchName"></h2>
+    	        <img id="matchImg" src="#" alt="">
+    	      </div>
+    	      <div class="modal-footer">
+    	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    	      </div>
+    	    </div>
+
+    	  </div>
+    	</div>
+
+      <script type="text/javascript">
+
+      // Capture the form inputs
+          $("#submit").on("click", function(){
+
+          	// Form validation
+          	function validateForm() {
+      		  var formIsValid = true;
+      		  $('.form-control').each(function() {
+      		    if ( $(this).val() === '' )
+      		        formIsValid = false;
+      		  });
+
+      		  $('.chosen-select').each(function() {
+
+      		  	if( $(this).val() === "")
+      		  		formIsValid = false
+      		  })
+      		  return formIsValid;
+      		}
+
+      		// If all required fields are filled
+      		if (validateForm() == true)
+      		{
+      			// Create an object for the user's data
+      	    	var newFriend = {
+      	    		name: $("#name").val(),
+      	    		photo: $("#photo").val(),
+      	    		scores: [$("#q1").val(), $("#q2").val(), $("#q3").val(), $("#q4").val(), $("#q5").val(), $("#q6").val(), $("#q7").val(), $("#q8").val(), $("#q9").val(), $("#q10").val(), ]
+      	    	}
+              console.log(newFriend);
+
+      	    	// Grab the URL of the website
+      	    	var currentURL = window.location.origin;
+
+      	    	// AJAX post the data to the friends API.
+      	    	$.post(currentURL + "/api/friends", newFriend);
+}
+            });
+
+
+          //     function(data){
+          //
+      	  //   		// Grab the result from the AJAX post so that the best match's name and photo are displayed.
+      	  //   		$("#matchName").text(data.name);
+      	  //   		$('#matchImg').attr("src", data.photo);
+          //
+      		//     	// Show the modal with the best match
+      		//     	$("#resultsModal").modal('toggle');
+          //
+      	  //   	});
+      		// }
+      		// else
+      		// {
+      		// 	alert("Please fill out all fields before submitting!");
+      		// }
+          //
+          // 	return false;
+          // });
+
+      </script>
+
 </body>
 
 </html>

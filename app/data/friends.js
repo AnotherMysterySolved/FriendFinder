@@ -17,4 +17,5 @@ var friendsArray = [
 }
 ];
 
+// Exporting array so it's accessible to other files using require
 module.exports = friendsArray;
